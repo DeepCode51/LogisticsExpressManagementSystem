@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	.anchorBL{display:none;}
+	*{padding: 0; margin: 0;}
+	.search{position: absolute; top: 0; left: 0; padding: 20px; background-color: rgba(255,255,255,0.2);}
+	li{list-style: none; border: #A7C0E0 solid 1px;}
+	.search ul{margin-top: 5%;}
+	.search li{display: inline-block; background-color: #FFF; padding: 5px 20px; cursor: pointer;}
+	.search input{font-family: "微软雅黑";}
+	.contSear{width:300px;box-sizing: border-box;padding: 10px 20px;border:2px solid transparent;line-height: 20px;font-size: 16px;height: 38px;color: #333;position: relative;;outline: none;}
+    .btSear{width: 80px; height: 35px; line-height: 35px; font-size: 18px; letter-spacing: 2px;}
+	.comp{position: absolute; bottom: 0; left: 0; background-color: rgba(255,255,255,0.5); padding: 0 10px;}
+	.comp img{width: 80px; height: 30px; float: left; padding: 5px;}
+	.clearFloat{display: block; content: "" ; clear: both;}
+	.comp p{float:left; font-size: 14px; color: #888; line-height: 40px;}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=F8GGZGTAevRPL7BwLtTjQvEzdAlpzqTt"></script>
+
+	
+	<title>地图</title>
+</head>
+<body>
+	<div id="allmap"></div>
+	<!--<div class="search">
+		<form>
+			<input class="contSear" placeholder="输入地址"/>
+			<input class="btSear" type="button" value="搜索" />
+		</form>
+		<ul>
+			<li>昆山</li>
+			<li>上海</li>
+			<li>北京</li>
+			<li>深圳</li>
+		</ul>
+	</div>
+	<div class="comp">
+		<img src="logo.png"/>
+		<p>昆山智谷</p>
+	</div>-->
+</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");    // 创建Map实例
+	map.centerAndZoom(new BMap.Point(121.511983,31.241901), 17);  // 初始化地图,设置中心点坐标和地图级别	
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+	var point = new BMap.Point(121.511983,31.241901);
+	var marker = new BMap.Marker(point);  // 创建标注
+	map.addOverlay(marker);              // 将标注添加到地图中
+	map.centerAndZoom(point, 17);
+	var opts = {
+	  width : 200,     // 信息窗口宽度
+	  height: 80,     // 信息窗口高度
+	  title : "【交大物流】软件科技有限公司" , // 信息窗口标题
+	}
+	var infoWindow = new BMap.InfoWindow("地址：上海市陆家嘴环路88888号", opts);  // 创建信息窗口对象 
+	map.openInfoWindow(infoWindow,point);//初始开启信息窗口
+	marker.addEventListener("click", function(){//按钮点击开启信息窗口
+		map.openInfoWindow(infoWindow,point); 
+	});
+	var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT});// 右上角，添加比例尺
+	map.addControl(top_left_control);
+	var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
+	map.addControl(mapType1);
+	var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM}); //右上角，仅包含平移和缩放按钮
+	map.addControl(top_right_navigation);
+	var local = new BMap.LocalSearch(map, {
+		renderOptions:{map: map}
+	});
+	//map.enableScrollWheelZoom(true); //全景添加卡网络
+	// 覆盖区域图层测试 卡
+	//map.addTileLayer(new BMap.PanoramaCoverageLayer());
+	//var stCtrl = new BMap.PanoramaControl(); //构造全景控件
+	//stCtrl.setOffset(new BMap.Size(20, 20));
+	//map.addControl(stCtrl);//添加全景控件
+</script>

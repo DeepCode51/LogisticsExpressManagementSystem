@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ischoolbar.programmer.dao.admin.OrderDao">
+	<!-- 订单插入操作 -->
+	<insert id="add"  useGeneratedKeys="true" keyProperty="id"  parameterType="com.ischoolbar.programmer.entity.admin.Order">
+		insert into orders(id,sn,sender,senderMobile,senderTel,senderAddress,reciever,recieverMobile,recieverTel,recieverAddress,goodsName,goodsPrice,goodsWeight,goodsVolum,remark,createTime) values(null,#{sn},#{sender},#{senderMobile},#{senderTel},#{senderAddress},#{reciever},#{recieverMobile},#{recieverTel},#{recieverAddress},#{goodsName},#{goodsPrice},#{goodsWeight},#{goodsVolum},#{remark},#{createTime})
+	</insert>
+	<!-- 订单更新操作 -->
+	<update id="edit"  parameterType="com.ischoolbar.programmer.entity.admin.Order">
+		update orders set sender=#{sender},senderMobile=#{senderMobile},senderTel=#{senderTel},senderAddress=#{senderAddress},reciever=#{reciever},recieverMobile=#{recieverMobile},recieverTel=#{recieverTel},recieverAddress=#{recieverAddress},goodsName=#{goodsName},goodsPrice=#{goodsPrice},goodsWeight=#{goodsWeight},goodsVolum=#{goodsVolum},remark=#{remark} where id = #{id}
+	</update>
+	<!-- 订单信息搜索查询 -->
+	<select id="findBySn" parameterType="Map" resultType="com.ischoolbar.programmer.entity.admin.Order">
+		select * from orders where sn = '${value}'
+	</select>
+	<!-- 订单信息搜索查询 -->
+	<select id="findList" parameterType="Map" resultType="com.ischoolbar.programmer.entity.admin.Order">
+		select * from orders where 1=1  
+		<if test="sender != null">
+			and sender like '%${sender}%' 
+		</if>
+		<if test="senderMobile != null">
+			and senderMobile like '%${senderMobile}%' 
+		</if>
+		<if test="senderTel != null">
+			and senderTel like '%${senderTel}%' 
+		</if>
+		<if test="senderAddress != null">
+			and senderAddress like '%${senderAddress}%' 
+		</if>
+		<if test="reciever != null">
+			and reciever like '%${reciever}%' 
+		</if>
+		<if test="recieverMobile != null">
+			and recieverMobile like '%${recieverMobile}%' 
+		</if>
+		<if test="recieverTel != null">
+			and recieverTel like '%${recieverTel}%' 
+		</if>
+		<if test="recieverAddress != null">
+			and recieverAddress like '%${recieverAddress}%' 
+		</if>
+		<if test="goodsName != null">
+			and goodsName like '%${goodsName}%' 
+		</if>
+		order by createTime desc 
+		<if test="offset != null and pageSize != null">
+			limit #{offset},#{pageSize} 
+		</if>
+	</select>
+	<!-- 模糊搜索总条数 -->
+	<select id="getTotal" parameterType="Map" resultType="Integer">
+		select count(*) from orders where 1=1 
+		<if test="sender != null">
+			and sender like '%${sender}%' 
+		</if>
+		<if test="senderMobile != null">
+			and senderMobile like '%${senderMobile}%' 
+		</if>
+		<if test="senderTel != null">
+			and senderTel like '%${senderTel}%' 
+		</if>
+		<if test="senderAddress != null">
+			and senderAddress like '%${senderAddress}%' 
+		</if>
+		<if test="reciever != null">
+			and reciever like '%${reciever}%' 
+		</if>
+		<if test="recieverMobile != null">
+			and recieverMobile like '%${recieverMobile}%' 
+		</if>
+		<if test="recieverTel != null">
+			and recieverTel like '%${recieverTel}%' 
+		</if>
+		<if test="recieverAddress != null">
+			and recieverAddress like '%${recieverAddress}%' 
+		</if>
+		<if test="goodsName != null">
+			and goodsName like '%${goodsName}%' 
+		</if>
+	</select>
+	<!-- 删除订单信息 -->
+	<delete id="delete" parameterType="String">
+		delete from orders where id in(${value})
+	</delete>
+</mapper>

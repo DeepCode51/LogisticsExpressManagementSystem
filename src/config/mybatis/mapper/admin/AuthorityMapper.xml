@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ischoolbar.programmer.dao.admin.AuthorityDao">
+	<!-- 权限插入操作 -->
+	<insert id="add" parameterType="Authority">
+		insert into authority(id,roleId,menuId) values(null,#{roleId},#{menuId})
+	</insert>
+	<!-- 权限信息搜索查询 -->
+	<select id="findListByRoleId" parameterType="Long" resultType="Authority">
+		select * from authority 
+		<if test="_parameter != null">
+			where roleId = #{roleId} 
+		</if>
+	</select>
+	
+	<!-- 删除权限信息 -->
+	<delete id="deleteByRoleId" parameterType="Long">
+		delete from authority where roleId = #{roleId}
+	</delete>
+</mapper>

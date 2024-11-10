@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ischoolbar.programmer.dao.admin.RoleDao">
+	<!-- 角色插入操作 -->
+	<insert id="add" parameterType="Role">
+		insert into role(id,name,remark) values(null,#{name},#{remark})
+	</insert>
+	<!-- 角色信息模糊分页搜索查询 -->
+	<select id="findList" parameterType="Map" resultType="role">
+		select * from role 
+		<if test="name != null">
+			where name like '%${name}%' 
+		</if>
+		<if test="offset != null and pageSize != null">
+			limit #{offset},#{pageSize}
+		</if>
+	</select>
+	<!-- 角色信息模糊分页搜索查询总记录数 -->
+	<select id="getTotal" parameterType="Map" resultType="Integer">
+		select count(*) from role  
+		<if test="name != null">
+			where name like '%${name}%' 
+		</if>
+	</select>
+	<!-- 根据id获取角色 -->
+	<select id="find" parameterType="Long" resultType="Role">
+		select * from role where id = #{id}
+	</select>
+	<!-- 修改角色信息 -->
+	<update id="edit" parameterType="Role">
+		update role set name = #{name},remark = #{remark} where id = #{id}
+	</update>
+	<!-- 删除角色信息 -->
+	<delete id="delete" parameterType="Long">
+		delete from role where id = #{id}
+	</delete>
+</mapper>

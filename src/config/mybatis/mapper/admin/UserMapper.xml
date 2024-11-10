@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ischoolbar.programmer.dao.admin.UserDao">
+	<!-- 根据用户名查找用户 -->
+	<select id="findByUsername" parameterType="String" resultType="User">
+		select * from user where username = #{username}
+	</select>
+	<!-- 添加用户 -->
+	<insert id="add" parameterType="User">
+		insert into user(id,username,password,roleId,photo,sex,age,address) values(null,#{username},#{password},#{roleId},#{photo},#{sex},#{age},#{address})
+	</insert>
+	<!-- 修改用户 -->
+	<update id="edit" parameterType="User">
+		update user set username = #{username},roleId = #{roleId},photo = #{photo},sex = #{sex},age = #{age},address = #{address} where id = #{id}
+	</update>
+	<!-- 修改用户密码 -->
+	<update id="editPassword" parameterType="User">
+		update user set password = #{password} where id = #{id}
+	</update>
+	<!-- 删除用户 -->
+	<delete id="delete" parameterType="String">
+		delete from user where id in(${value})
+	</delete>
+	<!-- 分页获取用户列表 -->
+	<select id="findList" parameterType="Map" resultType="User">
+		select * from user where 1 = 1 
+		<if test="username != null">
+			and username like '%${username}%' 
+		</if>
+		<if test="roleId != null">
+			and roleId = #{roleId}  
+		</if>
+		<if test="sex != null">
+			and sex = #{sex}  
+		</if>
+		<if test="offset != null and pageSize != null">
+			limit #{offset},#{pageSize}
+		</if>
+	</select>
+	<!-- 获取符合结果的总记录数 -->
+	<select id="getTotal" parameterType="Map" resultType="Integer">
+		select count(*) from user where 1 = 1 
+		<if test="username != null">
+			and username like '%${username}%' 
+		</if>
+		<if test="roleId != null">
+			and roleId = #{roleId}  
+		</if>
+		<if test="sex != null">
+			and sex = #{sex}  
+		</if>
+	</select>
+</mapper>

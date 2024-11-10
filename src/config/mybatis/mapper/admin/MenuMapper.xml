@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ischoolbar.programmer.dao.admin.MenuDao">
+	<!-- 菜单插入操作 -->
+	<insert id="add" parameterType="Menu">
+		insert into menu(id,parentId,name,url,icon) values(null,#{parentId},#{name},#{url},#{icon})
+	</insert>
+	<!-- 菜单信息模糊分页搜索查询 -->
+	<select id="findList" parameterType="Map" resultType="Menu">
+		select * from menu where 1 = 1 
+		<if test="parentId != null">
+			and parentId = #{parentId}  
+		</if>
+		<if test="name != null">
+			and name like '%${name}%' 
+		</if>
+		<if test="offset != null and pageSize != null">
+			limit #{offset},#{pageSize}
+		</if>
+	</select>
+	<!-- 菜单信息模糊分页搜索查询总记录数 -->
+	<select id="getTotal" parameterType="Map" resultType="Integer">
+		select count(*) from menu where 1 = 1  
+		<if test="parentId != null">
+			and parentId = #{parentId}  
+		</if>
+		<if test="name != null">
+			and name like '%${name}%' 
+		</if>
+	</select>
+	<!-- 获取顶级菜单信息 -->
+	<select id="findTopList" parameterType="Map" resultType="Menu">
+		select * from menu where parentId = 0
+	</select>
+	<!-- 获取某一分类的子菜单信息 -->
+	<select id="findChildernList" parameterType="Long" resultType="Menu">
+		select * from menu where parentId = #{parentId}
+	</select>
+	<!-- 根据菜单id获取菜单信息 -->
+	<select id="findListByIds" parameterType="String" resultType="Menu">
+		select * from menu where id in(${value})
+	</select>
+	<!-- 修改菜单信息 -->
+	<update id="edit" parameterType="Menu">
+		update menu set name = #{name},parentId = #{parentId},url = #{url},icon = #{icon} where id = #{id}
+	</update>
+	<!-- 删除菜单信息 -->
+	<delete id="delete" parameterType="Long">
+		delete from menu where id = #{id}
+	</delete>
+</mapper>
